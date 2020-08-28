@@ -16,6 +16,9 @@ build:
 run-local:
 	@docker-compose -f docker-compose.yml up --build
 
+run-local-up:
+	@docker-compose -f docker-compose.yml up
+
 down-local:
 	@docker-compose -f docker-compose.yml down
 

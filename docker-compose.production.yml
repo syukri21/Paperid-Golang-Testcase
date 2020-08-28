@@ -1,113 +1,66 @@
-version: '3.7'
+version: "3.7"
 
-services: 
+services:
   app:
-    hostname: golang_example_production
-    container_name: golang_example_production
-    depends_on: 
-      - postgres
-      - zookeeper
-    restart: always
-    build: 
+    hostname: paperid_development
+    container_name: paperid_development
+    depends_on:
+      - mysql
+    restart: unless-stopped
+    build:
       context: .
       dockerfile: Dockerfile
-      target: prod
-    environment: 
+      target: local
+    environment:
+      DEBUG: "true"
       SERVING_PORT: "*:8080"
-      DB_HOST: golang_example_db
-      DB_PORT: 5432
-      DB_NAME: golang_example_db
-      DB_USER: postgres
-      DB_PASS: developer
-      KAFKA_HOST_1: kafka_1:29092
-      KAFKA_HOST_2: kafka_2:29093
-      KAFKA_HOST_3: kafka_3:29094
-      GIN_MODE: release
+      DB_HOST: paperid_db
+    volumes:
+      - .:/app
+    working_dir: /app
+    env_file:
+      - .env
     ports:
       - 8080:8080
-    command: bash -c "go mod download && go build -o /bin/app/build/main ./src && /bin/app/build/main"
-    networks: 
-      - kafka
-      - golang_example_production
+    command: make watch
+    tty: true
+    networks:
+      - paperid_development
 
-  postgres:
-    image: postgres:11
-    container_name: golang_example_db
-    volumes:
-      - golang_example_production:/var/libs/postgresql/data
+  mysql:
+    image: mysql:5.7.26
+    container_name: paperid_db
+    restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=developer
-      - POSTGRES_DB=golang_example_db
-      - POSTGRES_PORT=5432
+      - MYSQL_DATABASE=paperid_db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
     ports:
-      - 5432:5432
-    networks: 
-      - golang_example_production
-  
-  zookeeper:
-    image: bitnami/zookeeper:latest
-    ports:
-      - 2181:2181
-    environment: 
-      - ALLOW_ANONYMOUS_LOGIN=yes
-    networks: 
-      - kafka
-  
-  kafka_1:
-    image: bitnami/kafka:latest
-    container_name: kafka_1
-    ports:
-      - 29092:29092
-      - 9092:9092
-    environment: 
-      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
-      - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      - KAFKA_LISTENERS=PLAINTEXT://:9092,PLAINTEXT_HOST://:29092
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka_1:9092,PLAINTEXT_HOST://kafka_1:29092
-    depends_on: 
-      - zookeeper
-    networks: 
-      - kafka
-    
-  kafka_2:
-    image: bitnami/kafka:latest
-    container_name: kafka_2
-    ports:
-      - 29093:29093
-      - 9093:9092
-    environment: 
-      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
-      - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      - KAFKA_LISTENERS=PLAINTEXT://:9093,PLAINTEXT_HOST://:29093
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka_2:9093,PLAINTEXT_HOST://kafka_2:29093
-    depends_on: 
-      - zookeeper
-    networks: 
-      - kafka
-    
-  kafka_3:
-    image: bitnami/kafka:latest
-    container_name: kafka_3
-    ports:
-      - 29094:29094
-      - 9094:9092
-    environment: 
-      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
-      - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      - KAFKA_LISTENERS=PLAINTEXT://:9094,PLAINTEXT_HOST://:29094
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka_3:9094,PLAINTEXT_HOST://kafka_3:29094
-    depends_on: 
-      - zookeeper
-    networks: 
-      - kafka
+      - 3306:3306
+    volumes:
+      - paperid:/var/lib/mysql
+    networks:
+      - paperid_development
 
-volumes: 
-  golang_example_production:
+  mysql_test:
+    image: mysql:5.7.26
+    container_name: paperid_db_test
+    restart: always
+    environment:
+      - MYSQL_DATABASE=paperid_db_test
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+    ports:
+      - 3308:3306
+    volumes:
+      - paperid:/var/lib/mysql
+    networks:
+      - paperid_development
+
+volumes:
+  paperid:
 
 networks:
-  kafka:
-  golang_example_production:
+  paperid_development:

@@ -5,7 +5,7 @@ services:
     hostname: paperid_development
     container_name: paperid_development
     depends_on:
-      - postgres
+      - mysql
     restart: unless-stopped
     build:
       context: .
@@ -29,7 +29,7 @@ services:
 
   mysql:
     image: mysql:5.7.26
-    restart: always
+    container_name: paperid_db
     environment:
       - MYSQL_DATABASE=paperid_db
       - MYSQL_USER=root
@@ -44,21 +44,23 @@ services:
 
   mysql_test:
     image: mysql:5.7.26
-    restart: always
+    container_name: paperid_db_test
     environment:
       - MYSQL_DATABASE=paperid_db_test
       - MYSQL_USER=root
       - MYSQL_PASSWORD=root
       - MYSQL_ALLOW_EMPTY_PASSWORD=1
     ports:
-      - 3306:3306
+      - 3308:3306
     volumes:
-      - paperid:/var/lib/mysql
+      - paperidTest:/var/lib/mysql
     networks:
       - paperid_development
 
 volumes:
   paperid:
+  paperidTest:
+
 
 networks:
   paperid_development:

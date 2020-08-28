@@ -1,7 +1,8 @@
 # Production
-FROM golang:1.14-alpine as prod
-RUN apk update && apk upgrade && \
-  apk add --no-cache bash git openssh
+FROM golang:1.15-alpine as prod
+
+RUN apk update && apk upgrade 
+RUN apk add --no-cache bash git openssh
 
 RUN mkdir -p /app
 WORKDIR /app
