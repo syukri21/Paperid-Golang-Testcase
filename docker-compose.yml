@@ -1,0 +1,64 @@
+version: "3.7"
+
+services:
+  app:
+    hostname: paperid_development
+    container_name: paperid_development
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: local
+    environment:
+      DEBUG: "true"
+      SERVING_PORT: "*:8080"
+      DB_HOST: paperid_db
+    volumes:
+      - .:/app
+    working_dir: /app
+    env_file:
+      - .env
+    ports:
+      - 8080:8080
+    command: make watch
+    tty: true
+    networks:
+      - paperid_development
+
+  mysql:
+    image: mysql:5.7.26
+    restart: always
+    environment:
+      - MYSQL_DATABASE=paperid_db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+    ports:
+      - 3306:3306
+    volumes:
+      - paperid:/var/lib/mysql
+    networks:
+      - paperid_development
+
+  mysql_test:
+    image: mysql:5.7.26
+    restart: always
+    environment:
+      - MYSQL_DATABASE=paperid_db_test
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+    ports:
+      - 3306:3306
+    volumes:
+      - paperid:/var/lib/mysql
+    networks:
+      - paperid_development
+
+volumes:
+  paperid:
+
+networks:
+  paperid_development:
