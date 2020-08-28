@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/syukri21/Paperid-Golang-Testcase/src/routes"
 )
 
 // Application -> application instance
@@ -23,8 +24,8 @@ func (a Application) CreateTest(r *gin.Engine) {
  * configuration all endpoint
  */
 func configureAPIEndpoint(r *gin.Engine) {
-	// g := r.Group("/")
-	// routes.Router(g)
+	g := r.Group("/")
+	routes.Router(g)
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{
 			"status": http.StatusNotFound,
