@@ -8,7 +8,7 @@ import (
 
 // Router middleware to handler routes
 func Router(g *gin.RouterGroup) {
-
+	// Auth
 	{
 		g.POST("/signup", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
@@ -32,6 +32,8 @@ func Router(g *gin.RouterGroup) {
 			})
 		})
 	}
+
+	// Check Health
 	{
 		g.GET("/health", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
