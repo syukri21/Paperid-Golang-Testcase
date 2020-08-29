@@ -3,6 +3,8 @@ package repositories
 import (
 	"time"
 
+	uuid "github.com/satori/go.uuid"
+
 	"github.com/jinzhu/gorm"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/database/entity"
 
@@ -37,16 +39,16 @@ func (r *UserRepository) CreateUser(user entity.User) GetUser {
 // UserExistParams -> Optional params for user exist
 type UserExistParams struct {
 	Email string
-	ID    uint
+	ID    *uuid.UUID
 }
 
 // UserExist -> method to check if user already exist in database by email or id
 func (r *UserRepository) UserExist(param UserExistParams) entity.User {
 	user := entity.User{}
-	if param.ID == 0 {
+	if param.ID == nil {
 		r.Conn.Select("email").Where(&entity.User{Email: param.Email}).First(&user)
 	} else {
-		r.Conn.Select("id").Where(&entity.User{ID: param.ID}).First(&user)
+		r.Conn.Select("id").Where(&entity.User{ID: *param.ID}).First(&user)
 	}
 	return user
 }
