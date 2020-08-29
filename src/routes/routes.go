@@ -16,13 +16,7 @@ func Router(g *gin.RouterGroup) {
 		controller := controllers.AuthControllerInstance()
 
 		g.POST("/signup", validations.Signup, controller.Signup)
-		g.POST("/signin", func(c *gin.Context) {
-			c.JSON(http.StatusOK, gin.H{
-				"status":   http.StatusOK,
-				"message":  "ready",
-				"database": "error",
-			})
-		})
+		g.POST("/signin", validations.Signin, controller.Signin)
 		g.POST("/signout", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
 				"status":   http.StatusOK,

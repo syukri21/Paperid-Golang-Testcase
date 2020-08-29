@@ -26,3 +26,21 @@ func Signup(c *gin.Context) {
 
 	Validate(signupValidate, errors)
 }
+
+// Signin ...
+func Signin(c *gin.Context) {
+	var errors []map[string]interface{}
+	var user schemas.Signin
+	if err := c.ShouldBindBodyWith(&user, binding.JSON); err != nil {
+		errors = append(errors, map[string]interface{}{
+			"message": fmt.Sprint(err.Error()), "flag": "INVALID_BODY"},
+		)
+	}
+
+	signinValidate := &schemas.Signin{
+		Password: user.Password,
+		Email:    user.Email,
+	}
+
+	Validate(signinValidate, errors)
+}
