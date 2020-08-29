@@ -1,4 +1,4 @@
-package flag
+package flags
 
 // AuthFlag is response code and message for user controller
 type AuthFlag struct {

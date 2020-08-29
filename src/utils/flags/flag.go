@@ -1,4 +1,4 @@
-package flag
+package flags
 
 // Error is error struct response
 type Error struct {
