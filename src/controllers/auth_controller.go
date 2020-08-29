@@ -52,10 +52,12 @@ func (c *AuthController) Signin(ctx *gin.Context) {
 
 // Signout ...
 func (c *AuthController) Signout(ctx *gin.Context) {
+	user := ctx.MustGet("user").(entity.User)
+	signout := c.AuthService.Signout(user)
 	ctx.JSON(http.StatusOK, gin.H{
 		"status":  http.StatusOK,
 		"message": flags.SignoutSuccess.Message,
-		"data":    nil,
+		"data":    signout,
 		"error":   nil,
 	})
 }

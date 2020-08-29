@@ -9,7 +9,6 @@ import (
 	"github.com/syukri21/Paperid-Golang-Testcase/src/repositories"
 
 	jwt "github.com/dgrijalva/jwt-go"
-	uuid "github.com/satori/go.uuid"
 
 	"github.com/gin-gonic/gin"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/middlewares/exception"
@@ -37,10 +36,10 @@ func JWT(ctx *gin.Context) {
 		jwtError(errors.New("Token Invalid"))
 	}
 
-	id := jwtClaims.(jwt.MapClaims)["id"].(uuid.UUID)
+	id := jwtClaims.(jwt.MapClaims)["id"].(string)
 
 	URepo := repositories.UserRepositoryInstance()
-	user, err := URepo.GetUserById(id)
+	user, err := URepo.GetUserByID(id)
 
 	if err != nil {
 		jwtError(errors.New("Token Invalid"))
