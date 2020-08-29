@@ -51,3 +51,13 @@ func (c *AuthController) Signin(ctx *gin.Context) {
 		"error":   nil,
 	})
 }
+
+// Signout ...
+func (c *AuthController) Signout(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, gin.H{
+		"status":  http.StatusOK,
+		"message": flags.SigninSuccess.Message,
+		"data":    nil,
+		"error":   nil,
+	})
+}

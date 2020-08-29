@@ -67,3 +67,9 @@ func (s *AuthService) Signin(params schemas.Signin) repositories.GetUser {
 		DeletedAt: user.DeletedAt,
 	}
 }
+
+// Signout ...
+func (s *AuthService) Signout(user entity.User) bool {
+	err := s.UserRepository.Conn.Model(&user).Update("jwt_token", "").Error
+	return err == nil
+}
