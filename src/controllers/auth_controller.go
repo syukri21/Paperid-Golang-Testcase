@@ -41,9 +41,7 @@ func (c *AuthController) Signup(ctx *gin.Context) {
 func (c *AuthController) Signin(ctx *gin.Context) {
 	var params schemas.Signin
 	ctx.ShouldBindBodyWith(&params, binding.JSON)
-
 	user := c.AuthService.Signin(params)
-
 	ctx.JSON(http.StatusOK, gin.H{
 		"status":  http.StatusOK,
 		"message": flags.SigninSuccess.Message,
