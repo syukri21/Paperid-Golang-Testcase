@@ -65,3 +65,9 @@ func (r *UserRepository) GetUserByEmail(email string) (user entity.User, err err
 	err = r.Conn.Where(&entity.User{Email: email}).First(&user).Error
 	return
 }
+
+// GetUserById ...
+func (r *UserRepository) GetUserById(id uuid.UUID) (user entity.User, err error) {
+	err = r.Conn.Where(&entity.User{ID: id}).First(&user).Error
+	return
+}

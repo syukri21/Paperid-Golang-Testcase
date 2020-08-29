@@ -24,6 +24,17 @@ func BadRequest(message string, errors []map[string]interface{}) {
 	panic(response)
 }
 
+// UnAuthorizedRequest -> response for bad request
+func UnAuthorizedRequest(message string, errors []map[string]interface{}) {
+	response := map[string]interface{}{
+		"status":  http.StatusUnauthorized,
+		"message": message,
+		"data":    nil,
+		"errors":  errors,
+	}
+	panic(response)
+}
+
 // Conflict -> response for conflict request
 func Conflict(message string, errors []map[string]interface{}) {
 	response := map[string]interface{}{

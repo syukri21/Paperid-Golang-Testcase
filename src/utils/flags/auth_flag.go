@@ -20,6 +20,10 @@ var (
 	SignoutSuccess = AuthFlag{
 		Message: "Success signout",
 	}
+	// UnAuthorized is response code and message
+	UnAuthorized = AuthFlag{
+		Message: "UnAuthorized",
+	}
 
 	// SigninErrors is response code and message
 	SigninErrors = AuthFlag{
