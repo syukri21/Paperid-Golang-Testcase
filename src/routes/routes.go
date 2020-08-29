@@ -16,7 +16,7 @@ func Router(g *gin.RouterGroup) {
 		controller := controllers.AuthControllerInstance()
 		g.POST("/signup", validations.Signup, controller.Signup)
 		g.POST("/signin", validations.Signin, controller.Signin)
-		g.POST("/signout", controller.Signout)
+		g.GET("/signout", controller.Signout)
 	}
 
 	// Check Health

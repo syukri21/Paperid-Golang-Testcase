@@ -56,7 +56,7 @@ func (c *AuthController) Signin(ctx *gin.Context) {
 func (c *AuthController) Signout(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"status":  http.StatusOK,
-		"message": flags.SigninSuccess.Message,
+		"message": flags.SignoutSuccess.Message,
 		"data":    nil,
 		"error":   nil,
 	})
