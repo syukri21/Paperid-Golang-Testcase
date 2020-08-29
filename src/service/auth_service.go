@@ -3,8 +3,8 @@ package service
 import (
 	"github.com/syukri21/Paperid-Golang-Testcase/src/database/entity"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/middlewares/exception"
+	"github.com/syukri21/Paperid-Golang-Testcase/src/middlewares/validations/schemas"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/repositories"
-	"github.com/syukri21/Paperid-Golang-Testcase/src/validations/schemas"
 )
 
 // AuthService -> AuthService
