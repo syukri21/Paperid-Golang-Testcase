@@ -5,7 +5,7 @@ import (
 
 	"github.com/syukri21/Paperid-Golang-Testcase/src/controllers"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/middlewares/authentication"
-	"github.com/syukri21/Paperid-Golang-Testcase/src/validations"
+	"github.com/syukri21/Paperid-Golang-Testcase/src/middlewares/validations"
 
 	"github.com/gin-gonic/gin"
 )

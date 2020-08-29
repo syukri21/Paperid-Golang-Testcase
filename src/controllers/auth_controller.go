@@ -7,9 +7,9 @@ import (
 	"github.com/gin-gonic/gin/binding"
 
 	"github.com/syukri21/Paperid-Golang-Testcase/src/database/entity"
+	"github.com/syukri21/Paperid-Golang-Testcase/src/middlewares/validations/schemas"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/service"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/utils/flags"
-	"github.com/syukri21/Paperid-Golang-Testcase/src/validations/schemas"
 )
 
 // AuthController -> AuthController

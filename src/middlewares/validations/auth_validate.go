@@ -3,7 +3,7 @@ package validations
 import (
 	"fmt"
 
-	"github.com/syukri21/Paperid-Golang-Testcase/src/validations/schemas"
+	"github.com/syukri21/Paperid-Golang-Testcase/src/middlewares/validations/schemas"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
