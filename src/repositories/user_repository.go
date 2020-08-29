@@ -21,6 +21,7 @@ type GetUser struct {
 	ID        uuid.UUID  `json:"id,omitempty"`
 	Email     string     `json:"email,omitempty"`
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
+	JwtToken  string     `json:"jwtToken,omitempty"`
 }
 
 // UserRepositoryInstance -> user repository instance to get user table connection
@@ -57,4 +58,10 @@ func (r *UserRepository) UserExist(param UserExistParams) (isExist bool) {
 		return false
 	}
 	return true
+}
+
+// GetUserByEmail ...
+func (r *UserRepository) GetUserByEmail(email string) (user entity.User, err error) {
+	err = r.Conn.Where(&entity.User{Email: email}).First(&user).Error
+	return
 }

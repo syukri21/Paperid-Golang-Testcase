@@ -1,8 +1,10 @@
 package entity
 
 import (
+	"os"
 	"time"
 
+	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/jinzhu/gorm"
 
 	"golang.org/x/crypto/bcrypt"
@@ -45,4 +47,15 @@ func (m *User) BeforeCreate(ctx *gorm.DB) (err error) {
 func (m *User) ComparePassword(password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(m.Password), []byte(password))
 	return err == nil
+}
+
+// GenerateJWT ...
+func (m *User) GenerateJWT() (string, error) {
+	signingKey := []byte(os.Getenv("JWT_SECRET"))
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"exp": time.Now().Add(time.Hour * 24 * 1).Unix(),
+		"id":  m.ID,
+	})
+	tokenString, err := token.SignedString(signingKey)
+	return tokenString, err
 }

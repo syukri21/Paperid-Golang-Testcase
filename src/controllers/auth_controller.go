@@ -9,6 +9,7 @@ import (
 	"github.com/syukri21/Paperid-Golang-Testcase/src/database/entity"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/service"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/utils/flags"
+	"github.com/syukri21/Paperid-Golang-Testcase/src/validations/schemas"
 )
 
 // AuthController -> AuthController
@@ -38,13 +39,15 @@ func (c *AuthController) Signup(ctx *gin.Context) {
 
 // Signin ...
 func (c *AuthController) Signin(ctx *gin.Context) {
-	var user entity.User
-	ctx.ShouldBindBodyWith(&user, binding.JSON)
+	var params schemas.Signin
+	ctx.ShouldBindBodyWith(&params, binding.JSON)
+
+	user := c.AuthService.Signin(params)
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"status":  http.StatusOK,
-		"message": flags.SignupSuccess.Message,
-		"data":    nil,
+		"message": flags.SigninSuccess.Message,
+		"data":    user,
 		"error":   nil,
 	})
 }
