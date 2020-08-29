@@ -16,15 +16,15 @@ var err error
 
 // Connection -> create connection with credentials
 func Connection() {
-	authDB := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s",
+
+	dbAuth := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASS"),
 		os.Getenv("DB_HOST"),
 		os.Getenv("DB_PORT"),
-		os.Getenv("DB_USER"),
 		os.Getenv("DB_NAME"),
-		os.Getenv("DB_PASS"),
 	)
-
-	conn, err = gorm.Open("mysql", authDB)
+	conn, err = gorm.Open("mysql", dbAuth)
 	if err != nil {
 		logging.Error("DB", err)
 	}
