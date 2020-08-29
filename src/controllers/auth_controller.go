@@ -24,14 +24,27 @@ func AuthControllerInstance() AuthController {
 // Signup -> Signup
 func (c *AuthController) Signup(ctx *gin.Context) {
 	var user entity.User
-
 	ctx.ShouldBindBodyWith(&user, binding.JSON)
+
 	newUser := c.AuthService.Signup(user)
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"status":  http.StatusOK,
 		"message": flags.SignupSuccess.Message,
 		"data":    newUser,
+		"error":   nil,
+	})
+}
+
+// Signin ...
+func (c *AuthController) Signin(ctx *gin.Context) {
+	var user entity.User
+	ctx.ShouldBindBodyWith(&user, binding.JSON)
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"status":  http.StatusOK,
+		"message": flags.SignupSuccess.Message,
+		"data":    user,
 		"error":   nil,
 	})
 }

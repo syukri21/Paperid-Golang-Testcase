@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/syukri21/Paperid-Golang-Testcase/src/controllers"
+	"github.com/syukri21/Paperid-Golang-Testcase/src/validations"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,7 +14,8 @@ func Router(g *gin.RouterGroup) {
 	// Auth
 	{
 		controller := controllers.AuthControllerInstance()
-		g.POST("/signup", controller.Signup)
+
+		g.POST("/signup", validations.Signup, controller.Signup)
 		g.POST("/signin", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
 				"status":   http.StatusOK,
