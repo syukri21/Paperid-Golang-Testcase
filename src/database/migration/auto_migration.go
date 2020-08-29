@@ -8,6 +8,6 @@ import (
 
 // AutoMigration is auto migrate database
 func AutoMigration(conn *gorm.DB) {
-	conn.AutoMigrate(entity.User{}, entity.Profile{})
+	conn.AutoMigrate(entity.User{}, entity.Profile{}, entity.FinanceAccount{}, entity.FinanceTransaction{}, entity.FinanceAccountType{})
 	logrus.Info("Success running migration")
 }

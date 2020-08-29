@@ -14,14 +14,16 @@ import (
 
 // User -> user entity schema
 type User struct {
-	ID        uuid.UUID  `gorm:"primary_key;type:char(36);" json:"id"`
-	Email     string     `gorm:"type:varchar(100);unique_index" json:"email" faker:"email"`
-	Password  string     `gorm:"type:varchar(255)" json:"password" faker:"password"`
-	JwtToken  *string    `gorm:"type:varchar(255)" json:"JwtToken" faker:"jwt"`
-	Role      string     `gorm:"type:enum('ADMIN', 'USER');default:'USER'" json:"role" faker:"oneof: ADMIN, USER"`
-	CreatedAt time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
-	DeletedAt *time.Time `json:"deleted_at,omitempty"`
+	ID              uuid.UUID        `gorm:"primary_key;type:char(36);" json:"id"`
+	Email           string           `gorm:"type:varchar(100);unique_index" json:"email" faker:"email"`
+	Password        string           `gorm:"type:varchar(255)" json:"password" faker:"password"`
+	JwtToken        *string          `gorm:"type:varchar(255)" json:"JwtToken" faker:"jwt"`
+	Role            string           `gorm:"type:enum('ADMIN', 'USER');default:'USER'" json:"role" faker:"oneof: ADMIN, USER"`
+	CreatedAt       time.Time        `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt       time.Time        `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
+	DeletedAt       *time.Time       `json:"deleted_at,omitempty"`
+	FinanceAccounts []FinanceAccount `json:"finance_accounts,omitempty"`
+	Profile         Profile          `json:"profile,omitempty"`
 }
 
 func (m *User) uuidGenerateV4() uuid.UUID {
