@@ -18,7 +18,7 @@ type UserRepository struct {
 
 // GetUser -> GetUser entity schema
 type GetUser struct {
-	ID        uint       `json:"id,omitempty"`
+	ID        uuid.UUID  `json:"id,omitempty"`
 	Email     string     `json:"email,omitempty"`
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 }
