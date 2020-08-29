@@ -1,7 +1,10 @@
 package entity
 
 import (
+	"errors"
 	"time"
+
+	"github.com/jinzhu/gorm"
 
 	"golang.org/x/crypto/bcrypt"
 
@@ -26,6 +29,15 @@ func (m *User) hashingPassword() (ok bool) {
 	}
 	m.Password = string(bytes)
 	return true
+}
+
+// BeforeCreate ...
+func (m *User) BeforeCreate(ctx *gorm.DB) (err error) {
+	ok := m.hashingPassword()
+	if !ok {
+		err = errors.New("can't save invalid data")
+	}
+	return err
 }
 
 // ComparePassword ...
