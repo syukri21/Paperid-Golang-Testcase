@@ -3,6 +3,8 @@ package entity
 import (
 	"time"
 
+	"golang.org/x/crypto/bcrypt"
+
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -15,4 +17,19 @@ type User struct {
 	CreatedAt time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
+}
+
+func (m *User) hashingPassword() (ok bool) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(m.Password), 4)
+	if err != nil {
+		return false
+	}
+	m.Password = string(bytes)
+	return true
+}
+
+// ComparePassword ...
+func (m *User) ComparePassword(password string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(m.Password), []byte(password))
+	return err == nil
 }
