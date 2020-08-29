@@ -33,3 +33,20 @@ func (r *UserRepository) CreateUser(user entity.User) GetUser {
 	r.Conn.Select("id, email, deleted_at").Where("id=?").First(&userCreated)
 	return userCreated
 }
+
+// UserExistParams -> Optional params for user exist
+type UserExistParams struct {
+	Email string
+	ID    uint
+}
+
+// UserExist -> method to check if user already exist in database by email or id
+func (r *UserRepository) UserExist(param UserExistParams) entity.User {
+	user := entity.User{}
+	if param.ID == 0 {
+		r.Conn.Select("email").Where(&entity.User{Email: param.Email}).First(&user)
+	} else {
+		r.Conn.Select("id").Where(&entity.User{ID: param.ID}).First(&user)
+	}
+	return user
+}
