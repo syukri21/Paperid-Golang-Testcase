@@ -3,6 +3,8 @@ package routes
 import (
 	"net/http"
 
+	"github.com/syukri21/Paperid-Golang-Testcase/src/controllers"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -10,13 +12,8 @@ import (
 func Router(g *gin.RouterGroup) {
 	// Auth
 	{
-		g.POST("/signup", func(c *gin.Context) {
-			c.JSON(http.StatusOK, gin.H{
-				"status":   http.StatusOK,
-				"message":  "ready",
-				"database": "error",
-			})
-		})
+		controller := controllers.AuthControllerInstance()
+		g.POST("/signup", controller.Signup)
 		g.POST("/signin", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
 				"status":   http.StatusOK,

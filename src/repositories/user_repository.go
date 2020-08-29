@@ -25,7 +25,8 @@ type GetUser struct {
 
 // UserRepositoryInstance -> user repository instance to get user table connection
 func UserRepositoryInstance() UserRepository {
-	return UserRepository{Conn: db.GetDB().Table("users")}
+	conn := db.GetDB().Table("users")
+	return UserRepository{Conn: conn}
 }
 
 // CreateUser -> CreateUser
@@ -45,7 +46,7 @@ type UserExistParams struct {
 // UserExist -> method to check if user already exist in database by email or id
 func (r *UserRepository) UserExist(param UserExistParams) entity.User {
 	user := entity.User{}
-	if param.ID == nil {
+	if param.ID != nil {
 		r.Conn.Select("email").Where(&entity.User{Email: param.Email}).First(&user)
 	} else {
 		r.Conn.Select("id").Where(&entity.User{ID: *param.ID}).First(&user)

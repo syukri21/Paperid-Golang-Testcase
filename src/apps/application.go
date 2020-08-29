@@ -3,7 +3,10 @@ package apps
 import (
 	"net/http"
 
+	"github.com/syukri21/Paperid-Golang-Testcase/src/middlewares/exception"
+
 	"github.com/gin-gonic/gin"
+	db "github.com/syukri21/Paperid-Golang-Testcase/src/database"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/routes"
 )
 
@@ -13,6 +16,8 @@ type Application struct {
 
 // CreateApp -> method to create gin application
 func (a Application) CreateApp(r *gin.Engine) {
+	r.Use(exception.Recovery(exception.ErrorHandler))
+	configureAppDB()
 	configureAPIEndpoint(r)
 }
 
@@ -42,6 +47,7 @@ func configureAPIEndpoint(r *gin.Engine) {
  * configuration database application
  */
 func configureAppDB() {
+	db.AppConnection()
 }
 
 /**

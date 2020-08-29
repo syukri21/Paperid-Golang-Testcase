@@ -18,9 +18,10 @@ func AuthServiceInstance() AuthService {
 
 // Signup -> Signup
 func (s *AuthService) Signup(user entity.User) repositories.GetUser {
+	ID := &user.ID
 	userExist := s.UserRepository.UserExist(repositories.UserExistParams{
 		Email: user.Email,
-		ID:    &user.ID,
+		ID:    ID,
 	})
 
 	if (userExist != entity.User{}) {
