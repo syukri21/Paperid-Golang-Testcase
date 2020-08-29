@@ -3,6 +3,8 @@ package routes
 import (
 	"net/http"
 
+	"github.com/syukri21/Paperid-Golang-Testcase/src/middlewares/authorization"
+
 	"github.com/syukri21/Paperid-Golang-Testcase/src/controllers"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/middlewares/authentication"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/middlewares/validations"
@@ -12,12 +14,13 @@ import (
 
 // Router middleware to handler routes
 func Router(g *gin.RouterGroup) {
+
 	// Auth
 	{
 		controller := controllers.AuthControllerInstance()
 		g.POST("/signup", validations.Signup, controller.Signup)
 		g.POST("/signin", validations.Signin, controller.Signin)
-		g.GET("/signout", authentication.JWT, controller.Signout)
+		g.GET("/signout", authentication.JWT, authorization.Role(authorization.USER), controller.Signout)
 	}
 
 	// Check Health
