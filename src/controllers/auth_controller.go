@@ -44,7 +44,7 @@ func (c *AuthController) Signin(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"status":  http.StatusOK,
 		"message": flags.SignupSuccess.Message,
-		"data":    user,
+		"data":    nil,
 		"error":   nil,
 	})
 }
