@@ -8,6 +8,8 @@ import (
 	"github.com/gin-gonic/gin"
 	db "github.com/syukri21/Paperid-Golang-Testcase/src/database"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/routes"
+	// driver
+	_ "gorm.io/driver/mysql"
 )
 
 // Application -> application instance

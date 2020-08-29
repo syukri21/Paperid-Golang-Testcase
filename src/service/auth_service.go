@@ -24,7 +24,7 @@ func (s *AuthService) Signup(user entity.User) repositories.GetUser {
 		ID:    ID,
 	})
 
-	if (userExist != entity.User{}) {
+	if userExist {
 		exception.Conflict("User conflict", []map[string]interface{}{
 			{"message": "User with this email already exist", "flag": "USER_ALREADY_EXIST"},
 		})
