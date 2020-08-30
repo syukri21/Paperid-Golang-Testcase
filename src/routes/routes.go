@@ -23,6 +23,13 @@ func Router(g *gin.RouterGroup) {
 		g.GET("/signout", authentication.JWT, authorization.Role(authorization.USER, authorization.ADMIN), controller.Signout)
 	}
 
+	{
+		controller := controllers.ProfileControllerInstance()
+		g.PUT("/profile", authentication.JWT, validations.ProfileUpdate, controller.Update)
+		g.GET("/profile", authentication.JWT, controller.GetByID)
+
+	}
+
 	// Finance Account
 	{
 		controller := controllers.FinanceAccountControllerInstance()

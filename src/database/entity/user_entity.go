@@ -23,7 +23,7 @@ type User struct {
 	UpdatedAt       time.Time        `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 	DeletedAt       *time.Time       `json:"deleted_at,omitempty"`
 	FinanceAccounts []FinanceAccount `json:"finance_accounts,omitempty"`
-	Profile         Profile          `json:"profile,omitempty"`
+	Profile         *Profile         `json:"profile,omitempty" gorm:"foreignkey:ID;association_foreignkey:UserID"`
 }
 
 func (m *User) uuidGenerateV4() uuid.UUID {

@@ -3,6 +3,7 @@ package entity
 import (
 	"time"
 
+	"github.com/jinzhu/gorm"
 	"github.com/satori/go.uuid"
 )
 
@@ -17,4 +18,10 @@ type Profile struct {
 	CreatedAt   time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt   time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 	DeletedAt   *time.Time `json:"deleted_at,omitempty"`
+}
+
+// BeforeCreate ...
+func (m *Profile) BeforeCreate(ctx *gorm.DB) (err error) {
+	m.ID = uuid.NewV4()
+	return
 }

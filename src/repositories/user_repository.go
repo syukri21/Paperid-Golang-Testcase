@@ -67,7 +67,26 @@ func (r *UserRepository) GetUserByEmail(email string) (user entity.User, err err
 }
 
 // GetUserByID ...
-func (r *UserRepository) GetUserByID(id string) (user entity.User, err error) {
+func (r *UserRepository) GetUserByID(id interface{}) (user entity.User, err error) {
 	err = r.Conn.Where("id = ?", id).First(&user).Error
+	return
+}
+
+// GetUserProfile -> GetUserProfile entity schema
+type GetUserProfile struct {
+	ID        uuid.UUID       `json:"id,omitempty"`
+	Email     string          `json:"email,omitempty"`
+	DeletedAt *time.Time      `json:"deleted_at,omitempty"`
+	Profile   *entity.Profile `json:"profile,omitempty" gorm:"foreignkey:ID;association_foreignkey:UserID"`
+}
+
+// TableName ..
+func (GetUserProfile) TableName() string {
+	return "users"
+}
+
+// GetUserProfileByID ...
+func (r *UserRepository) GetUserProfileByID(id interface{}) (user GetUserProfile, err error) {
+	err = r.Conn.Where("id = ?", id).Preload("Profile").First(&user).Error
 	return
 }

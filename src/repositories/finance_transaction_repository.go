@@ -67,7 +67,5 @@ func (r *FinanceTransactionRepository) Exist(id uuid.UUID) (exist bool) {
 	}
 
 	exist = len(data.ID) > 0
-
 	return
-
 }
