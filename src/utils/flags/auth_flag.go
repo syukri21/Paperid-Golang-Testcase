@@ -46,4 +46,12 @@ var (
 			Flag:    "BAD_REQUEST",
 		},
 	}
+
+	// DefaultError is response code and message
+	DefaultError = AuthFlag{
+		Error: Error{
+			Message: "Something went wrong",
+			Flag:    "BAD_REQUEST",
+		},
+	}
 )

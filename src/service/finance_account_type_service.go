@@ -2,7 +2,9 @@ package service
 
 import (
 	"github.com/syukri21/Paperid-Golang-Testcase/src/database/entity"
+	"github.com/syukri21/Paperid-Golang-Testcase/src/middlewares/exception"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/repositories"
+	"github.com/syukri21/Paperid-Golang-Testcase/src/utils/flags"
 )
 
 // FinanceAccountTypeService -> FinanceAccountTypeService
@@ -24,7 +26,61 @@ func (s *FinanceAccountTypeService) GetAll() []entity.FinanceAccountType {
 }
 
 // Create ...
-func (s *FinanceAccountTypeService) Create(Type entity.FinanceAccountType) []entity.FinanceAccountType {
-	types := s.FinanceAccountTypeRepository.()
+func (s *FinanceAccountTypeService) Create(Type entity.FinanceAccountType) entity.FinanceAccountType {
+	types, err := s.FinanceAccountTypeRepository.Create(Type)
+	if err != nil {
+		exception.BadRequest("Something Went Wrong", []map[string]interface{}{
+			{"message": flags.DefaultError.Message, "flag": flags.DefaultError.Flag},
+		})
+	}
 	return types
+}
+
+// GetByID ...
+func (s *FinanceAccountTypeService) GetByID(id uint) entity.FinanceAccountType {
+	types, err := s.FinanceAccountTypeRepository.GetTypeByID(id)
+	if err != nil {
+		exception.BadRequest("Something Went Wrong", []map[string]interface{}{
+			{"message": flags.DefaultError.Message, "flag": flags.DefaultError.Flag},
+		})
+	}
+	return types
+}
+
+// Update ...
+func (s *FinanceAccountTypeService) Update(t entity.FinanceAccountType) map[string]interface{} {
+
+	isExist := s.FinanceAccountTypeRepository.Exist(t.ID)
+
+	if isExist {
+		exception.BadRequest("Something Went Wrong", []map[string]interface{}{
+			{"message": "Type Already Exist", "flag": "BAD_REQUEST"},
+		})
+	}
+
+	_, err := s.FinanceAccountTypeRepository.Update(t.ID, repositories.FinanceUpdataParam{
+		Name:        &t.Name,
+		Description: &t.Description,
+	})
+
+	if err != nil {
+		exception.BadRequest("Something Went Wrong", []map[string]interface{}{
+			{"message": flags.DefaultError.Message, "flag": flags.DefaultError.Flag},
+		})
+	}
+	return map[string]interface{}{"message": "success"}
+}
+
+// Delete ...
+func (s *FinanceAccountTypeService) Delete(id uint) map[string]interface{} {
+
+	success, _ := s.FinanceAccountTypeRepository.DeleteType(id)
+
+	if !success {
+		exception.BadRequest("Something Went Wrong", []map[string]interface{}{
+			{"message": flags.DefaultError.Message, "flag": flags.DefaultError.Flag},
+		})
+	}
+
+	return map[string]interface{}{"message": "success"}
 }

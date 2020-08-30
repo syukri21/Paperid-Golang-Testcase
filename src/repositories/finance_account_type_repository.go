@@ -23,35 +23,60 @@ func FinanceAccountTypeRepositoryInstance() FinanceAccountTypeRepository {
 // GetTypes ->
 func (r *FinanceAccountTypeRepository) GetTypes() []entity.FinanceAccountType {
 	financeAccountTypes := []entity.FinanceAccountType{}
-	r.Conn.Find(&financeAccountTypes)
+	r.Conn.Where("deleted_at IS NOT NULL").Find(&financeAccountTypes)
 	return financeAccountTypes
 }
 
 // GetTypeByID ->
-func (r *FinanceAccountTypeRepository) GetTypeByID(id int) entity.FinanceAccountType {
-	financeAccountType := entity.FinanceAccountType{}
-	r.Conn.Where("id = ?", id).First(&financeAccountType)
-	return financeAccountType
+func (r *FinanceAccountTypeRepository) GetTypeByID(id uint) (financeAccountType entity.FinanceAccountType, err error) {
+	err = r.Conn.Where("id = ? AND deleted_at IS NOT NULL", id).First(&financeAccountType).Error
+	return
 }
 
-// UpdateType ->
-func (r *FinanceAccountTypeRepository) UpdateType(Type *entity.FinanceAccountType) (entity.FinanceAccountType, error) {
-	financeAccountType := entity.FinanceAccountType{}
-	err := r.Conn.Update(Type).Error
-	return financeAccountType, err
+// FinanceUpdataParam ...
+type FinanceUpdataParam struct {
+	Name        *string    `json:"name,omitempty"`
+	Description *string    `json:"description,omitempty"`
+	UpdatedAt   *time.Time `json:"deleted_at,omitempty"`
+}
+
+// Update ->
+func (r *FinanceAccountTypeRepository) Update(id uint, params FinanceUpdataParam) (bool, error) {
+	time := time.Now()
+	params.UpdatedAt = &time
+	err := r.Conn.Where("id = ?", id).Update(&params).Error
+	return err == nil, err
 }
 
 // DeleteType ->
-func (r *FinanceAccountTypeRepository) DeleteType(id int) (success bool) {
+func (r *FinanceAccountTypeRepository) DeleteType(id uint) (bool, error) {
 	time := time.Now()
 	err := r.Conn.Where("id = ?", id).Update(&entity.FinanceAccountType{
 		DeletedAt: &time,
 	}).Error
-	return err == nil
+	return err == nil, err
 }
 
 // Create ->
 func (r *FinanceAccountTypeRepository) Create(Type entity.FinanceAccountType) (entity.FinanceAccountType, error) {
 	err := r.Conn.Create(&Type).Error
 	return Type, err
+}
+
+// Exist ...
+func (r *FinanceAccountTypeRepository) Exist(id uint) (exist bool) {
+
+	t := entity.FinanceAccountType{}
+	if err := r.Conn.Select("id").Where("id = ?", id).First(&t).Error; err != nil {
+		exist = false
+	}
+
+	if t.ID > 0 {
+		exist = true
+	} else {
+		exist = false
+	}
+
+	return
+
 }
