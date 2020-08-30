@@ -23,22 +23,43 @@ func Router(g *gin.RouterGroup) {
 		g.GET("/signout", authentication.JWT, authorization.Role(authorization.USER, authorization.ADMIN), controller.Signout)
 	}
 
-	// Finance Type
+	// Finance Account
+	{
+		controller := controllers.FinanceAccountControllerInstance()
+		g.POST(
+			"/finance-accounts",
+			authentication.JWT,
+			validations.FinanceAccountCreate,
+			controller.Create,
+		)
+		g.GET("/finance-accounts", authentication.JWT, controller.GetAll)
+		// g.GET("/finance-accounts/:id", authentication.JWT, controller.GetOne)
+		// g.DELETE("/finance-accounts/:id", authentication.JWT, authorization.Role(authorization.ADMIN), controller.Delete)
+		// g.PUT(
+		// 	"/finance-accounts/:id",
+		// 	authentication.JWT,
+		// 	authorization.Role(authorization.ADMIN),
+		// 	validations.FinanceAccountTypeUpdate,
+		// 	controller.Update,
+		// )
+	}
+
+	// Finance Account Type
 	{
 		controller := controllers.FinanceAccountTypeControllerInstance()
 		g.POST(
-			"/finance-types",
+			"/finance-account/types",
 			authentication.JWT,
 			authorization.Role(authorization.ADMIN),
 			validations.FinanceAccountTypeCreate,
 			controller.Create,
 		)
-		g.GET("/finance-types", authentication.JWT, controller.GetAll)
-		g.GET("/finance-types/:id", authentication.JWT, controller.GetOne)
-		g.DELETE("/finance-types/:id", authentication.JWT, authorization.Role(authorization.ADMIN), controller.Delete)
+		g.GET("/finance-account/types", authentication.JWT, controller.GetAll)
+		g.GET("/finance-account/types/:id", authentication.JWT, controller.GetOne)
+		g.DELETE("/finance-account/types/:id", authentication.JWT, authorization.Role(authorization.ADMIN), controller.Delete)
 		g.PUT(
-			"/finance-types/:id", 
-			authentication.JWT, 
+			"/finance-account/types/:id",
+			authentication.JWT,
 			authorization.Role(authorization.ADMIN),
 			validations.FinanceAccountTypeUpdate,
 			controller.Update,
@@ -49,8 +70,8 @@ func Router(g *gin.RouterGroup) {
 	{
 		g.GET("/health", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
-				"status":   http.StatusOK,
-				"message":  "ready",
+				"status":  http.StatusOK,
+				"message": "ready",
 			})
 		})
 	}

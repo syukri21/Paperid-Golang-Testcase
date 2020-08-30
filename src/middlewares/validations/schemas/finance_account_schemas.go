@@ -4,7 +4,7 @@ package schemas
 type FinanceAccountCreate struct {
 	Name        string `validate:"required"`
 	Description string `validate:"omitempty"`
-	TypeID      uint   `validate:"required,gt=0"`
+	TypeID      uint   `validate:"required,gt=0" form:"typeId" json:"typeId"`
 }
 
 // FinanceAccountUpdate ...

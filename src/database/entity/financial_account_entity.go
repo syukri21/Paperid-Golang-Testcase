@@ -17,8 +17,7 @@ type FinanceAccount struct {
 	CreatedAt           time.Time            `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt           time.Time            `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 	DeletedAt           *time.Time           `json:"deleted_at,omitempty"`
-	Type                FinanceAccountType   `json:"type,omitempty"`
-	User                User                 `json:"user,omitempty"`
+	Type                *FinanceAccountType  `json:"type,omitempty" gorm:"foreignkey:TypeID;association_foreignkey:ID"`
 	FinanceTransactions []FinanceTransaction `json:"finance_transactions,omitempty"`
 }
 

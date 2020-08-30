@@ -18,12 +18,5 @@ func FinanceAccountCreate(c *gin.Context) {
 			"message": fmt.Sprint(err.Error()), "flag": "INVALID_BODY"},
 		)
 	}
-
-	validate := &schemas.FinanceAccountCreate{
-		Name:        data.Name,
-		Description: data.Description,
-	}
-
-	Validate(validate, errors)
+	Validate(data, errors)
 }
-

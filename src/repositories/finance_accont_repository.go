@@ -18,13 +18,13 @@ type FinanceAccountRepository struct {
 // FinanceAccountRepositoryInstance ...
 func FinanceAccountRepositoryInstance() FinanceAccountRepository {
 	return FinanceAccountRepository{
-		Conn: db.GetDB().Table("finance_account"),
+		Conn: db.GetDB().Table("finance_accounts"),
 	}
 }
 
 // GetAll ->
 func (r *FinanceAccountRepository) GetAll(p schemas.Pagination) (data []entity.FinanceAccount, err error) {
-	err = r.Conn.Offset(p.Offset).Limit(p.Limit).Where("deleted_at IS NULL").Find(&data).Error
+	err = r.Conn.Debug().Offset(p.Offset).Limit(p.Limit).Where("deleted_at IS NULL").Preload("Type").Find(&data).Error
 	return
 }
 
