@@ -3,10 +3,9 @@ package routes
 import (
 	"net/http"
 
-	"github.com/syukri21/Paperid-Golang-Testcase/src/middlewares/authorization"
-
 	"github.com/syukri21/Paperid-Golang-Testcase/src/controllers"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/middlewares/authentication"
+	"github.com/syukri21/Paperid-Golang-Testcase/src/middlewares/authorization"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/middlewares/validations"
 
 	"github.com/gin-gonic/gin"
@@ -21,6 +20,18 @@ func Router(g *gin.RouterGroup) {
 		g.POST("/signup", validations.Signup, controller.Signup)
 		g.POST("/signin", validations.Signin, controller.Signin)
 		g.GET("/signout", authentication.JWT, authorization.Role(authorization.USER), controller.Signout)
+	}
+
+	// Finance Type
+	{
+		controller := controllers.FinanceAccountTypeControllerInstance()
+		g.POST(
+			"/finance-type",
+			authentication.JWT,
+			authorization.Role(authorization.ADMIN),
+			validations.FinanceAccountTypeCreate,
+			controller.Create,
+		)
 	}
 
 	// Check Health

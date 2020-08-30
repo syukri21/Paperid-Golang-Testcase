@@ -28,7 +28,7 @@ func FinanceAccountTypeControllerInstance() FinanceAccountTypeController {
 // POST
 func (c *FinanceAccountTypeController) Create(ctx *gin.Context) {
 	params := schemas.FinanceAccountTypeCreate{}
-	ctx.ShouldBindBodyWith(params, binding.JSON)
+	ctx.ShouldBindBodyWith(&params, binding.JSON)
 	data := c.FinanceAccountTypeService.Create(params)
 	ctx.JSON(http.StatusOK, gin.H{
 		"status":  http.StatusOK,
@@ -74,10 +74,10 @@ func (c *FinanceAccountTypeController) Update(ctx *gin.Context) {
 	ctx.ShouldBindBodyWith(&body, binding.JSON)
 
 	data := c.FinanceAccountTypeService.Update(TypeID.ID, entity.FinanceAccountType{
-		Name: body.Name,
+		Name:        body.Name,
 		Description: body.Description,
 	})
-	
+
 	ctx.JSON(http.StatusOK, gin.H{
 		"status":  http.StatusOK,
 		"message": "success",
