@@ -56,16 +56,13 @@ func (s *FinanceAccountTypeService) Update(id uint, t entity.FinanceAccountType)
 
 	isExist := s.FinanceAccountTypeRepository.Exist(id)
 
-	if isExist {
+	if !isExist {
 		exception.BadRequest("Something Went Wrong", []map[string]interface{}{
-			{"message": "Type Already Exist", "flag": "BAD_REQUEST"},
+			{"message": "Type not exist or already delete", "flag": "BAD_REQUEST"},
 		})
 	}
 
-	_, err := s.FinanceAccountTypeRepository.Update(id, repositories.FinanceUpdataParam{
-		Name:        &t.Name,
-		Description: &t.Description,
-	})
+	_, err := s.FinanceAccountTypeRepository.Update(id, t)
 
 	if err != nil {
 		exception.BadRequest("Something Went Wrong", []map[string]interface{}{
@@ -77,6 +74,14 @@ func (s *FinanceAccountTypeService) Update(id uint, t entity.FinanceAccountType)
 
 // Delete ...
 func (s *FinanceAccountTypeService) Delete(id uint) map[string]interface{} {
+
+	isExist := s.FinanceAccountTypeRepository.Exist(id)
+
+	if !isExist {
+		exception.BadRequest("Something Went Wrong", []map[string]interface{}{
+			{"message": "Type not exist or already delete", "flag": "BAD_REQUEST"},
+		})
+	}
 
 	success, _ := s.FinanceAccountTypeRepository.DeleteType(id)
 

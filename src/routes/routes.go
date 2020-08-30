@@ -27,12 +27,16 @@ func Router(g *gin.RouterGroup) {
 	{
 		controller := controllers.FinanceAccountTypeControllerInstance()
 		g.POST(
-			"/finance-type",
+			"/finance-types",
 			authentication.JWT,
 			authorization.Role(authorization.ADMIN),
 			validations.FinanceAccountTypeCreate,
 			controller.Create,
 		)
+		g.GET("/finance-types", authentication.JWT, controller.GetAll)
+		g.GET("/finance-types/:id", authentication.JWT, controller.GetOne)
+		g.DELETE("/finance-types/:id", authentication.JWT, authorization.Role(authorization.ADMIN), controller.Delete)
+		g.PUT("/finance-types/:id", authentication.JWT, authorization.Role(authorization.ADMIN), controller.Update)
 	}
 
 	// Check Health
