@@ -43,6 +43,26 @@ func Router(g *gin.RouterGroup) {
 		)
 	}
 
+	// Finance Transaction
+	{
+		controller := controllers.FinanceTransactionControllerInstance()
+		g.POST(
+			"/finance-transactions",
+			authentication.JWT,
+			validations.FinanceTransactionCreate,
+			controller.Create,
+		)
+		g.GET("/finance-transactions", authentication.JWT, controller.GetAll)
+		g.GET("/finance-transactions/:id", authentication.JWT, controller.GetByID)
+		g.DELETE("/finance-transactions/:id", authentication.JWT, controller.Delete)
+		g.PUT(
+			"/finance-transactions/:id",
+			authentication.JWT,
+			validations.FinanceTransactionUpdate,
+			controller.Update,
+		)
+	}
+
 	// Finance Account Type
 	{
 		controller := controllers.FinanceAccountTypeControllerInstance()
