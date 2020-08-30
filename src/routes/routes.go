@@ -45,7 +45,6 @@ func Router(g *gin.RouterGroup) {
 			c.JSON(http.StatusOK, gin.H{
 				"status":   http.StatusOK,
 				"message":  "ready",
-				"database": "error",
 			})
 		})
 	}
