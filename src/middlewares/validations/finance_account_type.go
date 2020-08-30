@@ -20,3 +20,17 @@ func FinanceAccountCreate(c *gin.Context) {
 	}
 	Validate(data, errors)
 }
+
+
+
+// FinanceAccountUpdate ...
+func FinanceAccountUpdate(c *gin.Context) {
+	var errors []map[string]interface{}
+	var data schemas.FinanceAccountUpdate
+	if err := c.ShouldBindBodyWith(&data, binding.JSON); err != nil {
+		errors = append(errors, map[string]interface{}{
+			"message": fmt.Sprint(err.Error()), "flag": "INVALID_BODY"},
+		)
+	}
+	Validate(data, errors)
+}

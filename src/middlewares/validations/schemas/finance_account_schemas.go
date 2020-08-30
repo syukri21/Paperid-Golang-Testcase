@@ -11,10 +11,10 @@ type FinanceAccountCreate struct {
 type FinanceAccountUpdate struct {
 	Name        string `validate:"omitempty"`
 	Description string `validate:"omitempty"`
-	TypeID      uint   `validate:"omitempty,gt=0"`
+	TypeID      uint   `validate:"omitempty,gt=0" form:"typeId" json:"typeId"`
 }
 
 // ID is param uri validation for id
 type ID struct {
-	ID uint `uri:"id" binding:"required"`
+	ID string `uri:"id" binding:"required"`
 }

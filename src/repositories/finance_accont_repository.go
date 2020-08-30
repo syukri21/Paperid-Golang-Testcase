@@ -24,13 +24,13 @@ func FinanceAccountRepositoryInstance() FinanceAccountRepository {
 
 // GetAll ->
 func (r *FinanceAccountRepository) GetAll(p schemas.Pagination) (data []entity.FinanceAccount, err error) {
-	err = r.Conn.Debug().Offset(p.Offset).Limit(p.Limit).Where("deleted_at IS NULL").Preload("Type").Find(&data).Error
+	err = r.Conn.Offset(p.Offset).Limit(p.Limit).Where("deleted_at IS NULL").Preload("Type").Find(&data).Error
 	return
 }
 
 // GetByID ->
 func (r *FinanceAccountRepository) GetByID(id uuid.UUID) (data entity.FinanceAccount, err error) {
-	err = r.Conn.Where("id = ? AND deleted_at IS NULL", id).First(&data).Error
+	err = r.Conn.Debug().Where("id = ?", id).Preload("Type").First(&data).Error
 	return
 }
 

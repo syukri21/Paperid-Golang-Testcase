@@ -33,15 +33,14 @@ func Router(g *gin.RouterGroup) {
 			controller.Create,
 		)
 		g.GET("/finance-accounts", authentication.JWT, controller.GetAll)
-		// g.GET("/finance-accounts/:id", authentication.JWT, controller.GetOne)
-		// g.DELETE("/finance-accounts/:id", authentication.JWT, authorization.Role(authorization.ADMIN), controller.Delete)
-		// g.PUT(
-		// 	"/finance-accounts/:id",
-		// 	authentication.JWT,
-		// 	authorization.Role(authorization.ADMIN),
-		// 	validations.FinanceAccountTypeUpdate,
-		// 	controller.Update,
-		// )
+		g.GET("/finance-accounts/:id", authentication.JWT, controller.GetByID)
+		g.DELETE("/finance-accounts/:id", authentication.JWT, controller.Delete)
+		g.PUT(
+			"/finance-accounts/:id",
+			authentication.JWT,
+			validations.FinanceAccountUpdate,
+			controller.Update,
+		)
 	}
 
 	// Finance Account Type

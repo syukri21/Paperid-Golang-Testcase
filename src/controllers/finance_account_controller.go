@@ -3,8 +3,6 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/sirupsen/logrus"
-
 	"github.com/syukri21/Paperid-Golang-Testcase/src/database/entity"
 
 	"github.com/gin-gonic/gin"
@@ -31,9 +29,62 @@ func (c *FinanceAccountController) GetAll(ctx *gin.Context) {
 	pagination := schemas.Pagination{}
 	ctx.ShouldBindQuery(&pagination)
 
-	logrus.Info(pagination)
-
 	results := c.FinnanceAccountService.GetAll(pagination)
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"status":  http.StatusOK,
+		"message": "success",
+		"data":    results,
+		"error":   nil,
+	})
+}
+
+// GetByID ...
+func (c *FinanceAccountController) GetByID(ctx *gin.Context) {
+
+	ID := schemas.ID{}
+	ctx.ShouldBindUri(&ID)
+
+	results := c.FinnanceAccountService.GetByID(ID.ID)
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"status":  http.StatusOK,
+		"message": "success",
+		"data":    results,
+		"error":   nil,
+	})
+}
+
+// Update ...
+func (c *FinanceAccountController) Update(ctx *gin.Context) {
+
+	ID := schemas.ID{}
+	ctx.ShouldBindUri(&ID)
+
+	body := schemas.FinanceAccountUpdate{}
+	ctx.ShouldBindBodyWith(&body, binding.JSON)
+
+	results := c.FinnanceAccountService.Update(ID.ID, entity.FinanceAccount{
+		Name:        body.Name,
+		Description: body.Description,
+		TypeID:      body.TypeID,
+	})
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"status":  http.StatusOK,
+		"message": "success",
+		"data":    results,
+		"error":   nil,
+	})
+}
+
+// Delete ...
+func (c *FinanceAccountController) Delete(ctx *gin.Context) {
+
+	ID := schemas.ID{}
+	ctx.ShouldBindUri(&ID)
+
+	results := c.FinnanceAccountService.Delete(ID.ID)
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"status":  http.StatusOK,

@@ -33,8 +33,15 @@ func (s *FinanceAccountService) GetAll(p schemas.Pagination) (results []entity.F
 }
 
 // GetByID ...
-func (s *FinanceAccountService) GetByID(id uuid.UUID) (result entity.FinanceAccount) {
-	result, err := s.FinanceAccountRepository.GetByID(id)
+func (s *FinanceAccountService) GetByID(id string) (result entity.FinanceAccount) {
+	u, err := uuid.FromString(id)
+	if err != nil {
+		exception.BadRequest("Something Went Wrong", []map[string]interface{}{
+			{"message": flags.DefaultError.Message, "flag": flags.DefaultError.Flag},
+		})
+	}
+
+	result, err = s.FinanceAccountRepository.GetByID(u)
 	if err != nil {
 		exception.BadRequest("Something Went Wrong", []map[string]interface{}{
 			{"message": flags.DefaultError.Message, "flag": flags.DefaultError.Flag},
@@ -55,9 +62,16 @@ func (s *FinanceAccountService) Create(data entity.FinanceAccount) (result entit
 }
 
 // Update ...
-func (s *FinanceAccountService) Update(id uuid.UUID, data entity.FinanceAccount) map[string]interface{} {
+func (s *FinanceAccountService) Update(id string, data entity.FinanceAccount) map[string]interface{} {
 
-	isExist := s.FinanceAccountRepository.Exist(id)
+	u, err := uuid.FromString(id)
+	if err != nil {
+		exception.BadRequest("Something Went Wrong", []map[string]interface{}{
+			{"message": flags.DefaultError.Message, "flag": flags.DefaultError.Flag},
+		})
+	}
+
+	isExist := s.FinanceAccountRepository.Exist(u)
 
 	if !isExist {
 		exception.BadRequest("Something Went Wrong", []map[string]interface{}{
@@ -65,7 +79,7 @@ func (s *FinanceAccountService) Update(id uuid.UUID, data entity.FinanceAccount)
 		})
 	}
 
-	success, _ := s.FinanceAccountRepository.Update(id, data)
+	success, _ := s.FinanceAccountRepository.Update(u, data)
 	if !success {
 		exception.BadRequest("Something Went Wrong", []map[string]interface{}{
 			{"message": flags.DefaultError.Message, "flag": flags.DefaultError.Flag},
@@ -75,9 +89,15 @@ func (s *FinanceAccountService) Update(id uuid.UUID, data entity.FinanceAccount)
 }
 
 // Delete ...
-func (s *FinanceAccountService) Delete(id uuid.UUID) map[string]interface{} {
+func (s *FinanceAccountService) Delete(id string) map[string]interface{} {
+	u, err := uuid.FromString(id)
+	if err != nil {
+		exception.BadRequest("Something Went Wrong", []map[string]interface{}{
+			{"message": flags.DefaultError.Message, "flag": flags.DefaultError.Flag},
+		})
+	}
 
-	isExist := s.FinanceAccountRepository.Exist(id)
+	isExist := s.FinanceAccountRepository.Exist(u)
 
 	if !isExist {
 		exception.BadRequest("Something Went Wrong", []map[string]interface{}{
@@ -85,7 +105,7 @@ func (s *FinanceAccountService) Delete(id uuid.UUID) map[string]interface{} {
 		})
 	}
 
-	success, _ := s.FinanceAccountRepository.DeleteByID(id)
+	success, _ := s.FinanceAccountRepository.DeleteByID(u)
 	if !success {
 		exception.BadRequest("Something Went Wrong", []map[string]interface{}{
 			{"message": flags.DefaultError.Message, "flag": flags.DefaultError.Flag},
