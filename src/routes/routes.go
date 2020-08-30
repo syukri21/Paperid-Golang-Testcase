@@ -18,6 +18,7 @@ func Router(g *gin.RouterGroup) {
 	{
 		controller := controllers.AuthControllerInstance()
 		g.POST("/signup", validations.Signup, controller.Signup)
+		g.POST("/signup/admin", validations.Signup, controller.SignupAdmin)
 		g.POST("/signin", validations.Signin, controller.Signin)
 		g.GET("/signout", authentication.JWT, authorization.Role(authorization.USER), controller.Signout)
 	}

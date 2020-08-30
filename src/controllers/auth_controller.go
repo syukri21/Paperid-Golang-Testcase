@@ -37,6 +37,25 @@ func (c *AuthController) Signup(ctx *gin.Context) {
 	})
 }
 
+// SignupAdmin -> SignupAdmin
+func (c *AuthController) SignupAdmin(ctx *gin.Context) {
+	var user entity.User
+	ctx.ShouldBindBodyWith(&user, binding.JSON)
+
+	newUser := c.AuthService.Signup(entity.User{
+		Email:    user.Email,
+		Password: user.Password,
+		Role:     "ADMIN",
+	})
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"status":  http.StatusOK,
+		"message": flags.SignupSuccess.Message,
+		"data":    newUser,
+		"error":   nil,
+	})
+}
+
 // Signin ...
 func (c *AuthController) Signin(ctx *gin.Context) {
 	var params schemas.Signin
