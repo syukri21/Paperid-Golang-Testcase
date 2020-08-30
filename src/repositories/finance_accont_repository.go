@@ -7,6 +7,7 @@ import (
 	"github.com/satori/go.uuid"
 	db "github.com/syukri21/Paperid-Golang-Testcase/src/database"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/database/entity"
+	"github.com/syukri21/Paperid-Golang-Testcase/src/middlewares/validations/schemas"
 )
 
 // FinanceAccountRepository ...
@@ -22,8 +23,8 @@ func FinanceAccountRepositoryInstance() FinanceAccountRepository {
 }
 
 // GetAll ->
-func (r *FinanceAccountRepository) GetAll() (data []entity.FinanceAccount, err error) {
-	err = r.Conn.Where("deleted_at IS NULL").Find(&data).Error
+func (r *FinanceAccountRepository) GetAll(p schemas.Pagination) (data []entity.FinanceAccount, err error) {
+	err = r.Conn.Offset(p.Offset).Limit(p.Limit).Where("deleted_at IS NULL").Find(&data).Error
 	return
 }
 

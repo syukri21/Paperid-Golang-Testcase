@@ -4,6 +4,7 @@ import (
 	"github.com/satori/go.uuid"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/database/entity"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/middlewares/exception"
+	"github.com/syukri21/Paperid-Golang-Testcase/src/middlewares/validations/schemas"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/repositories"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/utils/flags"
 )
@@ -20,10 +21,9 @@ func FinanceAccountServiceInstance() FinanceAccountService {
 	}
 }
 
-
 // GetAll ...
-func (s *FinanceAccountService) GetAll() (results []entity.FinanceAccount) {
-	results, err := s.FinanceAccountRepository.GetAll()
+func (s *FinanceAccountService) GetAll(p schemas.Pagination) (results []entity.FinanceAccount) {
+	results, err := s.FinanceAccountRepository.GetAll(p)
 	if err != nil {
 		exception.BadRequest("Something Went Wrong", []map[string]interface{}{
 			{"message": flags.DefaultError.Message, "flag": flags.DefaultError.Flag},
