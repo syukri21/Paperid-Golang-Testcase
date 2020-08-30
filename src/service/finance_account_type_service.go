@@ -22,7 +22,7 @@ func FinanceAccountTypeServiceInstance() FinanceAccountTypeService {
 
 // GetAll ...
 func (s *FinanceAccountTypeService) GetAll() []entity.FinanceAccountType {
-	types := s.FinanceAccountTypeRepository.GetTypes()
+	types := s.FinanceAccountTypeRepository.GetAll()
 	return types
 }
 
@@ -42,7 +42,7 @@ func (s *FinanceAccountTypeService) Create(Type schemas.FinanceAccountTypeCreate
 
 // GetByID ...
 func (s *FinanceAccountTypeService) GetByID(id uint) entity.FinanceAccountType {
-	types, err := s.FinanceAccountTypeRepository.GetTypeByID(id)
+	types, err := s.FinanceAccountTypeRepository.GetByID(id)
 	if err != nil {
 		exception.BadRequest("Something Went Wrong", []map[string]interface{}{
 			{"message": flags.DefaultError.Message, "flag": flags.DefaultError.Flag},
@@ -83,7 +83,7 @@ func (s *FinanceAccountTypeService) Delete(id uint) map[string]interface{} {
 		})
 	}
 
-	success, _ := s.FinanceAccountTypeRepository.DeleteType(id)
+	success, _ := s.FinanceAccountTypeRepository.DeleteByID(id)
 
 	if !success {
 		exception.BadRequest("Something Went Wrong", []map[string]interface{}{

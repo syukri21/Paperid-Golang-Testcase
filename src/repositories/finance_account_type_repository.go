@@ -20,15 +20,15 @@ func FinanceAccountTypeRepositoryInstance() FinanceAccountTypeRepository {
 	return FinanceAccountTypeRepository{Conn: conn}
 }
 
-// GetTypes ->
-func (r *FinanceAccountTypeRepository) GetTypes() []entity.FinanceAccountType {
+// GetAll ->
+func (r *FinanceAccountTypeRepository) GetAll() []entity.FinanceAccountType {
 	financeAccountTypes := []entity.FinanceAccountType{}
 	r.Conn.Where("deleted_at IS NULL").Find(&financeAccountTypes)
 	return financeAccountTypes
 }
 
-// GetTypeByID ->
-func (r *FinanceAccountTypeRepository) GetTypeByID(id uint) (financeAccountType entity.FinanceAccountType, err error) {
+// GetByID ->
+func (r *FinanceAccountTypeRepository) GetByID(id uint) (financeAccountType entity.FinanceAccountType, err error) {
 	err = r.Conn.Where("id = ? AND deleted_at IS NULL", id).First(&financeAccountType).Error
 	return
 }
@@ -41,8 +41,8 @@ func (r *FinanceAccountTypeRepository) Update(id uint, params entity.FinanceAcco
 	return err == nil, err
 }
 
-// DeleteType ->
-func (r *FinanceAccountTypeRepository) DeleteType(id uint) (bool, error) {
+// DeleteByID ->
+func (r *FinanceAccountTypeRepository) DeleteByID(id uint) (bool, error) {
 	time := time.Now()
 	err := r.Conn.Where("id = ?", id).Update(&entity.FinanceAccountType{
 		DeletedAt: &time,
