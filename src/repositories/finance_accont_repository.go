@@ -58,7 +58,7 @@ func (r *FinanceAccountRepository) Create(params entity.FinanceAccount) (data en
 }
 
 // Exist ...
-func (r *FinanceAccountRepository) Exist(id uint) (exist bool) {
+func (r *FinanceAccountRepository) Exist(id uuid.UUID) (exist bool) {
 
 	data := entity.FinanceAccount{}
 	if err := r.Conn.Select("id").Where("id = ?", id).First(&data).Error; err != nil {

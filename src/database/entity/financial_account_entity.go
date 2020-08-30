@@ -3,6 +3,7 @@ package entity
 import (
 	"time"
 
+	"github.com/jinzhu/gorm"
 	"github.com/satori/go.uuid"
 )
 
@@ -19,4 +20,10 @@ type FinanceAccount struct {
 	Type                FinanceAccountType   `json:"type,omitempty"`
 	User                User                 `json:"user,omitempty"`
 	FinanceTransactions []FinanceTransaction `json:"finance_transactions,omitempty"`
+}
+
+// BeforeCreate ...
+func (m *FinanceAccount) BeforeCreate(ctx *gorm.DB) (err error) {
+	m.ID = uuid.NewV4()
+	return
 }
