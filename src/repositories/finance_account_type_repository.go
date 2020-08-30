@@ -15,9 +15,9 @@ type FinanceAccountTypeRepository struct {
 }
 
 // FinanceAccountTypeRepositoryInstance ->
-func FinanceAccountTypeRepositoryInstance() UserRepository {
+func FinanceAccountTypeRepositoryInstance() FinanceAccountTypeRepository {
 	conn := db.GetDB().Table("finance_account_types")
-	return UserRepository{Conn: conn}
+	return FinanceAccountTypeRepository{Conn: conn}
 }
 
 // GetTypes ->
@@ -48,4 +48,10 @@ func (r *FinanceAccountTypeRepository) DeleteType(id int) (success bool) {
 		DeletedAt: &time,
 	}).Error
 	return err == nil
+}
+
+// Create ->
+func (r *FinanceAccountTypeRepository) Create(Type entity.FinanceAccountType) (entity.FinanceAccountType, error) {
+	err := r.Conn.Create(&Type).Error
+	return Type, err
 }
