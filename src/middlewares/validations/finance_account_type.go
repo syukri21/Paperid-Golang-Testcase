@@ -9,20 +9,21 @@ import (
 	"github.com/gin-gonic/gin/binding"
 )
 
-// FinanceAccountTypeCreate ...
-func FinanceAccountTypeCreate(c *gin.Context) {
+// FinanceAccountCreate ...
+func FinanceAccountCreate(c *gin.Context) {
 	var errors []map[string]interface{}
-	var data schemas.FinanceAccountTypeCreate
+	var data schemas.FinanceAccountCreate
 	if err := c.ShouldBindBodyWith(&data, binding.JSON); err != nil {
 		errors = append(errors, map[string]interface{}{
 			"message": fmt.Sprint(err.Error()), "flag": "INVALID_BODY"},
 		)
 	}
 
-	validate := &schemas.FinanceAccountTypeCreate{
+	validate := &schemas.FinanceAccountCreate{
 		Name:        data.Name,
 		Description: data.Description,
 	}
 
 	Validate(validate, errors)
 }
+

@@ -36,7 +36,13 @@ func Router(g *gin.RouterGroup) {
 		g.GET("/finance-types", authentication.JWT, controller.GetAll)
 		g.GET("/finance-types/:id", authentication.JWT, controller.GetOne)
 		g.DELETE("/finance-types/:id", authentication.JWT, authorization.Role(authorization.ADMIN), controller.Delete)
-		g.PUT("/finance-types/:id", authentication.JWT, authorization.Role(authorization.ADMIN), controller.Update)
+		g.PUT(
+			"/finance-types/:id", 
+			authentication.JWT, 
+			authorization.Role(authorization.ADMIN),
+			validations.FinanceAccountTypeUpdate,
+			controller.Update,
+		)
 	}
 
 	// Check Health
