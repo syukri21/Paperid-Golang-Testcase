@@ -3,6 +3,7 @@ package service
 import (
 	"github.com/syukri21/Paperid-Golang-Testcase/src/database/entity"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/middlewares/exception"
+	"github.com/syukri21/Paperid-Golang-Testcase/src/middlewares/validations/schemas"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/repositories"
 	"github.com/syukri21/Paperid-Golang-Testcase/src/utils/flags"
 )
@@ -26,8 +27,11 @@ func (s *FinanceAccountTypeService) GetAll() []entity.FinanceAccountType {
 }
 
 // Create ...
-func (s *FinanceAccountTypeService) Create(Type entity.FinanceAccountType) entity.FinanceAccountType {
-	types, err := s.FinanceAccountTypeRepository.Create(Type)
+func (s *FinanceAccountTypeService) Create(Type schemas.FinanceAccountTypeCreate) entity.FinanceAccountType {
+	types, err := s.FinanceAccountTypeRepository.Create(entity.FinanceAccountType{
+		Name:        Type.Name,
+		Description: Type.Description,
+	})
 	if err != nil {
 		exception.BadRequest("Something Went Wrong", []map[string]interface{}{
 			{"message": flags.DefaultError.Message, "flag": flags.DefaultError.Flag},
@@ -48,9 +52,9 @@ func (s *FinanceAccountTypeService) GetByID(id uint) entity.FinanceAccountType {
 }
 
 // Update ...
-func (s *FinanceAccountTypeService) Update(t entity.FinanceAccountType) map[string]interface{} {
+func (s *FinanceAccountTypeService) Update(id uint, t entity.FinanceAccountType) map[string]interface{} {
 
-	isExist := s.FinanceAccountTypeRepository.Exist(t.ID)
+	isExist := s.FinanceAccountTypeRepository.Exist(id)
 
 	if isExist {
 		exception.BadRequest("Something Went Wrong", []map[string]interface{}{
@@ -58,7 +62,7 @@ func (s *FinanceAccountTypeService) Update(t entity.FinanceAccountType) map[stri
 		})
 	}
 
-	_, err := s.FinanceAccountTypeRepository.Update(t.ID, repositories.FinanceUpdataParam{
+	_, err := s.FinanceAccountTypeRepository.Update(id, repositories.FinanceUpdataParam{
 		Name:        &t.Name,
 		Description: &t.Description,
 	})
