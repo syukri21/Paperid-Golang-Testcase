@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -23,8 +24,20 @@ func FinanceTransactionRepositoryInstance() FinanceTransactionRepository {
 }
 
 // GetAll ->
-func (r *FinanceTransactionRepository) GetAll(p schemas.Pagination) (data []entity.FinanceTransaction, err error) {
-	err = r.Conn.Offset(p.Offset).Limit(p.Limit).Where("deleted_at IS NULL").Find(&data).Error
+func (r *FinanceTransactionRepository) GetAll(p schemas.Pagination, date schemas.Summary) (data []entity.FinanceTransaction, err error) {
+	query := r.Conn.Debug().Offset(p.Offset).Limit(p.Limit)
+
+	fmt.Printf("%s", date)
+	if date.Day > 0 || date.Month > 0 {
+		now := time.Now()
+		after := now.AddDate(0, -date.Month, 0)
+		after = after.AddDate(0, 0, -date.Day)
+		query = query.Where("created_at > ?", after)
+	} else {
+		query = query.Where("deleted_at IS NULL")
+	}
+
+	err = query.Find(&data).Error
 	return
 }
 

@@ -24,3 +24,9 @@ type FinanceTransactionURI struct {
 	ID               uuid.UUID `uri:"id" binding:"required"`
 	FinanceAccountID uuid.UUID `uri:"financeAccountId" binding:"required"`
 }
+
+// Summary is param uri validation for id
+type Summary struct {
+	Month int `validate:"omitempty,numeric" form:"month"`
+	Day   int `validate:"omitempty,numeric" form:"day"`
+}

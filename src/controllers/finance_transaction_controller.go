@@ -52,7 +52,10 @@ func (c *FinanceTransactionController) GetAll(ctx *gin.Context) {
 	pagination := schemas.Pagination{}
 	ctx.ShouldBindQuery(&pagination)
 
-	results := c.FinanceTransactionService.GetAll(pagination)
+	date := schemas.Summary{}
+	ctx.ShouldBindQuery(&date)
+
+	results := c.FinanceTransactionService.GetAll(pagination, date)
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"status":  http.StatusOK,

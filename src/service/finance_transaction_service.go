@@ -22,8 +22,8 @@ func FinanceTransactionServiceInstance() FinanceTransactionService {
 }
 
 // GetAll ...
-func (s *FinanceTransactionService) GetAll(p schemas.Pagination) (results []entity.FinanceTransaction) {
-	results, err := s.FinanceTransactionRepository.GetAll(p)
+func (s *FinanceTransactionService) GetAll(p schemas.Pagination, date schemas.Summary) (results []entity.FinanceTransaction) {
+	results, err := s.FinanceTransactionRepository.GetAll(p, date)
 	if err != nil {
 		exception.BadRequest("Something Went Wrong", []map[string]interface{}{
 			{"message": flags.DefaultError.Message, "flag": flags.DefaultError.Flag},
