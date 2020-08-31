@@ -30,7 +30,7 @@ func (r *FinanceAccountRepository) GetAll(p schemas.Pagination) (data []entity.F
 
 // GetByID ->
 func (r *FinanceAccountRepository) GetByID(id uuid.UUID) (data entity.FinanceAccount, err error) {
-	err = r.Conn.Debug().Where("id = ?", id).Preload("Type").Preload("FinanceTransactions").First(&data).Error
+	err = r.Conn.Where("id = ?", id).Preload("Type").Preload("FinanceTransactions").First(&data).Error
 	return
 }
 

@@ -39,6 +39,6 @@ func (r *ProfileRepository) Update(id uuid.UUID, data entity.Profile) (result en
 // Exist ...
 func (r *ProfileRepository) Exist(id uuid.UUID) (exist bool) {
 	data := entity.FinanceTransaction{}
-	rowsAffected := r.Conn.Debug().Select("id").Where("id = ? OR user_id = ?", id, id).First(&data).RowsAffected
+	rowsAffected := r.Conn.Select("id").Where("id = ? OR user_id = ?", id, id).First(&data).RowsAffected
 	return rowsAffected > 0
 }

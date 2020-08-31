@@ -24,7 +24,7 @@ func FinanceTransactionRepositoryInstance() FinanceTransactionRepository {
 
 // GetAll ->
 func (r *FinanceTransactionRepository) GetAll(p schemas.Pagination, date schemas.Summary) (data []entity.FinanceTransaction, err error) {
-	query := r.Conn.Debug().Offset(p.Offset).Limit(p.Limit)
+	query := r.Conn.Offset(p.Offset).Limit(p.Limit)
 
 	if date.Day > 0 || date.Month > 0 {
 		now := time.Now()
@@ -41,7 +41,7 @@ func (r *FinanceTransactionRepository) GetAll(p schemas.Pagination, date schemas
 
 // GetByID ->
 func (r *FinanceTransactionRepository) GetByID(id uuid.UUID) (data entity.FinanceTransaction, err error) {
-	err = r.Conn.Debug().Where("id = ?", id).Preload("User").Preload("FinanceAccount").First(&data).Error
+	err = r.Conn.Where("id = ?", id).Preload("User").Preload("FinanceAccount").First(&data).Error
 	return
 }
 
