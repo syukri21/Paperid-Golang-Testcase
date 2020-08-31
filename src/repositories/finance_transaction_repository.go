@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -27,7 +26,6 @@ func FinanceTransactionRepositoryInstance() FinanceTransactionRepository {
 func (r *FinanceTransactionRepository) GetAll(p schemas.Pagination, date schemas.Summary) (data []entity.FinanceTransaction, err error) {
 	query := r.Conn.Debug().Offset(p.Offset).Limit(p.Limit)
 
-	fmt.Printf("%s", date)
 	if date.Day > 0 || date.Month > 0 {
 		now := time.Now()
 		after := now.AddDate(0, -date.Month, 0)
